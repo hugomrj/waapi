@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
 import requests
-import json
+
 
 app = Flask(__name__)
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "8.0"})
+    return jsonify({"version": "9.0"})
 
 def send_whatsapp_message(phone_number, message_body):
     """Envía un mensaje a través de la API de WhatsApp Business"""
@@ -14,8 +14,9 @@ def send_whatsapp_message(phone_number, message_body):
     
     url = "https://graph.facebook.com/v22.0/635224343007012/messages"
     
+
     headers = {
-        "Authorization": "EAAjChKYE1goBO0W7pkwA7fr4avpaiao1wWMeAwRGFtUo3ag5ROIDih5a56z533clXjb2fbeDVqHlim8MWb4Mgp4i4JuLM0nGF7TOQhc9x2x2eZC1D317nZCiAVxikMdWJEx6q1V1SkaxUEN9U5V6X1RfMQ0qqdt8TVN812sT04CaoKLhWkVhwuNZAzj0vyZA6nblZAPdVu8jAOtRMlWMw9H5xQstT",
+        "Authorization": "Bearer EAAjChKYE1goBOzPhaHDUlyiTuVRUa8kmKyZCb2ZApnTocC6gCHj2SbTP2muycx6PsYirtXl8vrqn2ZASxSA5mRSV9mikVfz3KZADpVEbvdkAFAtZAqiY6i5QK7YKuwCnZB6IttEaRmkdfCBEFKhAmDapaS1NjCwaso64aCXrxFlbE5ZBioAtg3i5B2pGCfNK0eDAqwFsRIOOlofCDBwlq3i6bKk",
         "Content-Type": "application/json"
     }
     
