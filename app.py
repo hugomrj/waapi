@@ -5,7 +5,7 @@ app = Flask(__name__)
 # Nueva ruta para obtener la versión
 @app.route('/version')
 def version():
-    return jsonify({"version": "4.0"})
+    return jsonify({"version": "6.0"})
 
 
 # Ruta del webhook
@@ -17,7 +17,7 @@ def webhook_whatsapp():
         else:
             return "Error de autentificacion."
     
-    
+
     data = request.get_json()
     mensaje = "Telefono:" + data['entry'][0]['changes'][0]['value']['messages'][0]['from']
     mensaje += "|Mensaje:" + data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
