@@ -64,10 +64,26 @@ def webhook_whatsapp():
                 
                 message = changes[0].get('value', {}).get('messages', [{}])[0]
                 from_number = message.get('from')
+                received_text = message.get('text', {}).get('body', '')
 
-                if from_number:
-                    response = send_whatsapp_message(from_number, "Hola, soy un bot de prueba")
-                    return jsonify({"status": "message sent" if response else "error sending message"}), 200 if response else 500
+                if from_number and received_text:
+                    # Llamar a la API de /pregunta_ia con el texto recibido
+                    api_url = "http://3.12.160.19/chat/pregunta_ia"  # Cambiar a tu URL correcta
+                    headers = {"Content-Type": "application/json"}
+                    payload = {"pregunta": received_text}
+
+                    # Realizar la solicitud POST a la API
+                    response = requests.post(api_url, json=payload, headers=headers)
+                    
+                    if response.status_code == 200:
+                        # Obtener la respuesta de la API
+                        respuesta = response.json().get('respuesta', 'No se pudo obtener una respuesta.')
+
+                        # Enviar la respuesta a WhatsApp
+                        send_response = send_whatsapp_message(from_number, respuesta)
+                        return jsonify({"status": "message sent" if send_response else "error sending message"}), 200 if send_response else 500
+                    else:
+                        return jsonify({"status": "error", "message": "Error from API"}), response.status_code
             
             return jsonify({"status": "not a whatsapp message"}), 200
         
@@ -77,5 +93,37 @@ def webhook_whatsapp():
 
 
 
+# curl "http://localhost:5000/chat/test?pregunta=¿Cuál+es+la+capital+de+Francia?"
+@app.route("/test", methods=["GET"])
+def test_api():
+    try:
+        # Obtener la pregunta desde los parámetros de la URL
+        pregunta = request.args.get('pregunta')
+        
+        if not pregunta:
+            return jsonify({"error": "Falta la pregunta en la URL"}), 400
+        
+        # URL de la API de IA
+        api_url = "http://3.12.160.19/chat/pregunta_ia"  # Cambia por la URL correcta de tu servidor
+        headers = {"Content-Type": "application/json"}
+        payload = {"pregunta": pregunta}
+        
+        # Realizar la solicitud a la API de IA
+        response = requests.post(api_url, json=payload, headers=headers)
+
+        if response.status_code == 200:
+            # Obtener la respuesta de la IA
+            respuesta = response.json().get('respuesta', 'No se pudo obtener una respuesta.')
+            return jsonify({"respuesta": respuesta}), 200
+        else:
+            return jsonify({"error": "Error al llamar a la API de IA"}), response.status_code
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+        
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)            
