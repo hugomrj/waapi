@@ -93,7 +93,7 @@ def webhook_whatsapp():
 
 
 
-# curl "http://localhost:5000/chat/test?pregunta=¿Cuál+es+la+capital+de+Francia?"
+# curl "/test?pregunta=¿pregunta?"
 @app.route("/test", methods=["GET"])
 def test_api():
     try:
