@@ -5,7 +5,7 @@ app = Flask(__name__)
 # Nueva ruta para obtener la versión
 @app.route('/version')
 def version():
-    return jsonify({"version": "3.0"})
+    return jsonify({"version": "4.0"})
 
 
 # Ruta del webhook
@@ -21,13 +21,23 @@ def webhook_whatsapp():
     mensaje = "Telefono:" + data['entry'][0]['changes'][0]['value']['messages'][0]['from']
     mensaje += "|Mensaje:" + data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
     
-    with open("texto.txt", "w") as f:
-        f.write(mensaje)
-    
-    return jsonify({"status": "success"}), 200  # Corregido el código de estado
+    # Extraer número del remitente
+    remitente = data['entry'][0]['changes'][0]['value']['messages'][0]['from']
+
+    # Respuesta para WhatsApp (envía mensaje al usuario)
+    return jsonify({
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": remitente,
+        "type": "text",
+        "text": {
+            "body": "Hola desde mi bot! 🚀"
+        }
+    }), 200
+
 
 
 if __name__ == "__main__":
     app.run(debug=True)
 
-    
+
