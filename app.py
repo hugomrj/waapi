@@ -42,11 +42,11 @@ if not all([VERIFY_TOKEN, ACCESS_TOKEN, PHONE_ID, APP_SECRET]):
 
 
 @app.route('/version')
-def health_check():
+def version():
     return jsonify({"status": "active", 
                     "service": "WhatsApp Echo API", 
                     "version": "1.0.0", 
-                    "build": "01"})
+                    "build": "02"})
 
 
 
