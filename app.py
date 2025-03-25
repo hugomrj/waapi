@@ -17,6 +17,7 @@ def webhook_whatsapp():
         else:
             return "Error de autentificacion."
     
+    
     data = request.get_json()
     mensaje = "Telefono:" + data['entry'][0]['changes'][0]['value']['messages'][0]['from']
     mensaje += "|Mensaje:" + data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
