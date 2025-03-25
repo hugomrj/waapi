@@ -40,6 +40,17 @@ if not all([VERIFY_TOKEN, ACCESS_TOKEN, PHONE_ID, APP_SECRET]):
 # 🚀 ENDPOINTS PRINCIPALES
 # ================================================
 
+
+@app.route('/version')
+def health_check():
+    return jsonify({"status": "active", 
+                    "service": "WhatsApp Echo API", 
+                    "version": "1.0.0", 
+                    "build": "01"})
+
+
+
+
 @app.route('/')
 def health_check():
     """Endpoint de verificación de estado"""
@@ -48,6 +59,8 @@ def health_check():
         "service": "WhatsApp Echo API",
         "version": "1.0.0"
     })
+
+
 
 @app.route('/webhook', methods=['GET'])
 def verify_webhook():
@@ -64,6 +77,8 @@ def verify_webhook():
         app.logger.info("Verificación exitosa")
         return challenge, 200
     return "Token inválido", 403
+
+
 
 @app.route('/webhook', methods=['POST'])
 def handle_message():
