@@ -5,8 +5,9 @@ import requests
 
 app = Flask(__name__)
 
-# Cargar las variables del archivo .env
-load_dotenv()
+# Cargar las variables del archivo .env solo si estamos en local
+# load_dotenv()
+
 
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
