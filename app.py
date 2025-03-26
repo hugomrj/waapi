@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from flask import Flask, abort, jsonify, logging, request
 import requests
 
-from mensajes import crear_archivo_conversacion
+from mensajes import crear_archivo_conversacion, guardar_pregunta_en_archivo
 
 app = Flask(__name__)
 
@@ -21,7 +21,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.5"})
+    return jsonify({"version": "10.6"})
 
 
 
@@ -92,7 +92,8 @@ def webhook_whatsapp():
 
 
                     # Guardar la conversación en el archivo
-                    crear_archivo_conversacion(from_number)                        
+                    crear_archivo_conversacion(from_number)                               
+                    guardar_pregunta_en_archivo(from_number, received_text)         
 
                     # Mostrar el número en el log                    
                     app.logger.debug(f"Se recibió el número: {from_number}")
