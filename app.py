@@ -22,7 +22,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.7"})
+    return jsonify({"version": "10.8"})
 
 
 
@@ -38,12 +38,27 @@ def send_whatsapp_message(phone_number, message_body):
         "Content-Type": "application/json"
     }
 
+
+    # Definir el mensaje con los contextos y la pregunta actual
+    message = {
+        "Sistema": "Eres un asistente virtual de la dirección de sueldos y beneficios del Ministerio de Educación que ayuda a obtener información, y les respondes solamente en español, con amabilidad. Solo responde preguntas relacionadas con sueldos y beneficios del Ministerio de Educación. No respondas preguntas de historia, geografía, o cualquier otro tema ajeno a tu función específica.",
+        "Contexto": [
+            "Contexto 1: los usuarios pueden solicitar informacion sobre su certificado de trabajo del mes actual.",
+            "Contexto 2: los usuarios deben estar identificados para poder proporcionarles ese servicio.",
+            "Contexto 3: cuando te presentes solo ten en cuenta lo anunciado en el apartado de sistema:"
+        ],
+        "Pregunta actual": message_body,
+        "Max_token": 50
+    }
+
+
+
     payload = {
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
         "to": phone_number,
         "type": "text",
-        "text": {"body": message_body}
+        "text": {"body": message}
     }
     
     try:
