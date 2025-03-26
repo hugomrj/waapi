@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 from dotenv import load_dotenv
 from flask import Flask, abort, jsonify, request
 import requests
@@ -22,7 +23,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.8"})
+    return jsonify({"version": "10.9"})
 
 
 
@@ -52,13 +53,16 @@ def send_whatsapp_message(phone_number, message_body):
     }
 
 
+    # Convertir el mensaje en una cadena JSON
+    message_str = json.dumps(message, ensure_ascii=False)
+
 
     payload = {
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
         "to": phone_number,
         "type": "text",
-        "text": {"body": message}
+        "text": {"body": message_str}
     }
     
     try:
