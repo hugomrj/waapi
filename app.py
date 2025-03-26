@@ -1,6 +1,7 @@
 import os
+import logging
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, logging, request
+from flask import Flask, abort, jsonify, request
 import requests
 
 from mensajes import crear_archivo_conversacion, guardar_pregunta_en_archivo
@@ -21,7 +22,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.6"})
+    return jsonify({"version": "10.7"})
 
 
 
