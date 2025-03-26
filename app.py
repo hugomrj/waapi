@@ -1,11 +1,14 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, request
+from flask import Flask, abort, jsonify, logging, request
 import requests
 
 from mensajes import crear_archivo_conversacion
 
 app = Flask(__name__)
+
+# Establecer el nivel de log de Flask a DEBUG
+app.logger.setLevel(logging.DEBUG)
 
 
 # Cargar las variables del archivo .env solo si estamos en local
@@ -18,7 +21,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.4"})
+    return jsonify({"version": "10.5"})
 
 
 
