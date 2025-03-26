@@ -1,13 +1,12 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, abort, jsonify, request
 import requests
 
 app = Flask(__name__)
 
 # Cargar las variables del archivo .env solo si estamos en local
 # load_dotenv()
-
 
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
@@ -102,6 +101,26 @@ def webhook_whatsapp():
         except Exception as e:
             print(f"Error processing webhook: {e}")
             return jsonify({"status": "error", "message": str(e)}), 500
+
+
+
+
+
+@app.route('/ver_conversacion/<phone_number>', methods=['GET'])
+def ver_conversacion(phone_number):
+    # Definir la ruta del archivo basado en el número de teléfono
+    carpeta = 'mensajes_log'
+    archivo_path = os.path.join(carpeta, f'{phone_number}.txt')
+
+    # Verifica si el archivo existe
+    if os.path.exists(archivo_path):
+        # Abrir el archivo y leer su contenido
+        with open(archivo_path, 'r') as archivo:
+            contenido = archivo.read()
+        return contenido  # Devolver el contenido del archivo en el navegador
+    else:
+        abort(404)  # Si el archivo no existe, devolver un error 404
+
 
 
 
