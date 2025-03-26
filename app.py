@@ -1,25 +1,36 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 import requests
 
-
 app = Flask(__name__)
+
+# Cargar las variables del archivo .env
+load_dotenv()
+
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
+PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
+VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
+
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "9.0"})
+    return jsonify({"version": "10.0"})
+
+
 
 def send_whatsapp_message(phone_number, message_body):
     """Envía un mensaje a través de la API de WhatsApp Business"""
 
-    
-    url = "https://graph.facebook.com/v22.0/635224343007012/messages"
+
+    url = f"https://graph.facebook.com/v22.0/{PHONE_NUMBER_ID}/messages"
     
 
     headers = {
-        "Authorization": "Bearer EAAjChKYE1goBOzPhaHDUlyiTuVRUa8kmKyZCb2ZApnTocC6gCHj2SbTP2muycx6PsYirtXl8vrqn2ZASxSA5mRSV9mikVfz3KZADpVEbvdkAFAtZAqiY6i5QK7YKuwCnZB6IttEaRmkdfCBEFKhAmDapaS1NjCwaso64aCXrxFlbE5ZBioAtg3i5B2pGCfNK0eDAqwFsRIOOlofCDBwlq3i6bKk",
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
         "Content-Type": "application/json"
     }
-    
+
     payload = {
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
@@ -43,7 +54,7 @@ def send_whatsapp_message(phone_number, message_body):
 @app.route("/webhook/", methods=["POST", "GET"])
 def webhook_whatsapp():
     if request.method == "GET":
-        if request.args.get('hub.verify_token', '') == "HolaNovato":
+        if request.args.get('hub.verify_token', '') == VERIFY_TOKEN:
             return request.args.get('hub.challenge', ''), 200
         return "Error de autenticación.", 403
     

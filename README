@@ -1,0 +1,9 @@
+# Configuración de Variables de Entorno
+
+Este proyecto requiere las siguientes variables de entorno:
+
+- **ACCESS_TOKEN**: Token de acceso para la API.
+- **PHONE_NUMBER_ID**: ID del número de teléfono asociado.
+- **VERIFY_TOKEN**: Token de verificación para Webhook.
+
+Guarda estas variables en un archivo `.env` y cárgalas en tu entorno de ejecución.
