@@ -1,16 +1,11 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, logging, request
+from flask import Flask, abort, jsonify, request
 import requests
 
 from mensajes import crear_archivo_conversacion
 
 app = Flask(__name__)
-
-# Configurar el logger
-logging.basicConfig(level=logging.DEBUG)  # Configurar el nivel de log
-logger = logging.getLogger(__name__)
-
 
 
 # Cargar las variables del archivo .env solo si estamos en local
@@ -23,7 +18,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.3"})
+    return jsonify({"version": "10.4"})
 
 
 
@@ -96,8 +91,8 @@ def webhook_whatsapp():
                     # Guardar la conversación en el archivo
                     crear_archivo_conversacion(from_number)                        
 
-                    # Mostrar el número en el log
-                    logger.debug(f"Se recibió el número: {from_number}")
+                    # Mostrar el número en el log                    
+                    app.logger.debug(f"Se recibió el número: {from_number}")
 
 
                     # Realizar la solicitud POST a la API
