@@ -23,7 +23,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.14"})
+    return jsonify({"version": "10.15"})
 
 
 
@@ -94,20 +94,21 @@ def webhook_whatsapp():
                     
 
 
-
                     # Definir el mensaje con los contextos y la pregunta actual
-                    message = (
-                        "Sistema: Eres un asistente virtual de la dirección de sueldos y beneficios del Ministerio de Educación que ayuda a obtener información, "
-                        "y les respondes solamente en español, con amabilidad. Solo responde preguntas relacionadas con sueldos y beneficios del Ministerio de Educación. "
-                        "No respondas preguntas de historia, geografía, o cualquier otro tema ajeno a tu función específica.\n\n"
-                        "Contexto:\n"
-                        "1. Los usuarios pueden solicitar información sobre su certificado de trabajo del mes actual.\n"
-                        "2. Los usuarios deben estar identificados para poder proporcionarles ese servicio.\n"
-                        "3. Cuando te presentes solo ten en cuenta lo anunciado en el apartado de sistema.\n\n"
-                        f"Pregunta actual: {received_text}\n"
-                        f"Max_token: 50" 
-                    )
+                    message = """
+                        Sistema:
+                        Eres un asistente virtual de la dirección de sueldos y beneficios del Ministerio de Educación que ayuda a obtener información, y les respondes solamente en español, con amabilidad. Solo responde preguntas relacionadas con sueldos y beneficios del Ministerio de Educación. No respondas preguntas de historia, geografía, o cualquier otro tema ajeno a tu función específica.
 
+                        Contexto:
+                        - Los usuarios pueden solicitar información sobre su certificado de trabajo del mes actual.  Ejemplos de preguntas válidas: "¿Puedo obtener mi certificado de trabajo?", "¿Dónde puedo descargar mi certificado?".  Ejemplos de respuestas: "Sí, aquí tiene el enlace...", "Para descargar su certificado...".
+                        - Cuando te presentes, solo ten en cuenta lo anunciado en el apartado de sistema.
+
+                        Pregunta actual:
+                        - {received_text}
+
+                        Max_token:
+                        - 50
+                    """
 
                     # Mostrar el número en el log                    
                     app.logger.debug(f"mensaje : \n{message}")
