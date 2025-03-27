@@ -23,7 +23,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.15"})
+    return jsonify({"version": "10.16"})
 
 
 
@@ -95,7 +95,7 @@ def webhook_whatsapp():
 
 
                     # Definir el mensaje con los contextos y la pregunta actual
-                    message = """
+                    pregunta = f"""
                         Sistema:
                         Eres un asistente virtual de la dirección de sueldos y beneficios del Ministerio de Educación que ayuda a obtener información, y les respondes solamente en español, con amabilidad. Solo responde preguntas relacionadas con sueldos y beneficios del Ministerio de Educación. No respondas preguntas de historia, geografía, o cualquier otro tema ajeno a tu función específica.
 
@@ -111,7 +111,7 @@ def webhook_whatsapp():
                     """
 
                     # Mostrar el número en el log                    
-                    app.logger.debug(f"mensaje : \n{message}")
+                    app.logger.debug(f"pregunta : \n{pregunta}")
 
                                # Guardar la conversación en el archivo
                     crear_archivo_conversacion(from_number)                               
@@ -122,7 +122,7 @@ def webhook_whatsapp():
 
 
                     # Realizar la solicitud POST a la API
-                    response = requests.post(api_url, json={"pregunta": message}, headers=headers)                    
+                    response = requests.post(api_url, json={"pregunta": pregunta}, headers=headers)                    
 
                     app.logger.debug(f"response.status_code: {response.status_code}")
 
