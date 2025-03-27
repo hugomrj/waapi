@@ -9,7 +9,7 @@ def buscar_usuario(numero):
                 if num == numero:
                     return usuario
     except FileNotFoundError:
-        pass  # No hacer nada si el archivo no existe
-    return None
-
-
+        # Si el archivo no existe, lo indicamos claramente
+        print("El archivo datos/usuario.txt no fue encontrado.")
+        return ""  # Retorna una cadena vacía si no encuentra el archivo
+    return ""  # Si no se encuentra el número, también retorna una cadena vacía
