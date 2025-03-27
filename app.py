@@ -26,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.21"})
+    return jsonify({"version": "10.22"})
 
 
 
@@ -99,10 +99,11 @@ def webhook_whatsapp():
                     usuario = buscar_usuario(from_number)
                     if usuario:
                         usuario = f"El usuario se llama {usuario}"                        
+                    app.logger.debug(f"usuario  : {usuario}")
 
 
                     # Definir el mensaje con los contextos y la pregunta actual
-                    pregunta = generar_pregunta(received_text)
+                    pregunta = generar_pregunta(received_text, usuario)
 
 
                     # Mostrar el número en el log                    
