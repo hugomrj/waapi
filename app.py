@@ -2,7 +2,7 @@ import os
 import logging
 import json
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, request, send_from_directory
+from flask import Flask, abort, jsonify, request, send_from_directory, url_for
 import requests
 
 from contexto import generar_pregunta
@@ -35,6 +35,44 @@ def version():
 @app.route('/pdf/<filename>')
 def serve_pdf(filename):
     return send_from_directory('pdf', filename)
+
+
+
+# Añade esta nueva función para documentos
+def send_whatsapp_document(phone_number, document_url, filename, caption=None):
+    """Envía un documento PDF a través de la API de WhatsApp Business"""
+    
+    url = f"https://graph.facebook.com/v22.0/{PHONE_NUMBER_ID}/messages"
+    
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    document_data = {
+        "link": document_url,
+        "filename": filename
+    }
+    
+    if caption:
+        document_data["caption"] = caption
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": phone_number,
+        "type": "document",
+        "document": document_data
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"Error enviando documento: {e}")
+        return None
+
 
 
 
@@ -97,6 +135,24 @@ def webhook_whatsapp():
                 message = changes[0].get('value', {}).get('messages', [{}])[0]
                 from_number = message.get('from')
                 received_text = message.get('text', {}).get('body', '')
+
+
+
+
+                # Manejar solicitud de liquidación
+                if received_text.lower() == "pdf":
+                    pdf_url = url_for('serve_pdf', filename='liquidacion.pdf', _external=True)
+                    send_response = send_whatsapp_document(
+                        phone_number=from_number,
+                        document_url=pdf_url,
+                        filename="liquidacion.pdf",
+                        caption="Aquí tienes tu liquidación oficial"
+                    )
+                    return jsonify({"status": "document sent" if send_response else "error sending document"}), 200 if send_response else 500
+
+
+
+
 
 
                 if from_number and received_text:
