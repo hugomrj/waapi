@@ -23,7 +23,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.13"})
+    return jsonify({"version": "10.14"})
 
 
 
@@ -121,8 +121,10 @@ def webhook_whatsapp():
 
 
                     # Realizar la solicitud POST a la API
-                    response = requests.post(api_url, json=message, headers=headers)
-                    
+                    response = requests.post(api_url, json={"pregunta": message}, headers=headers)                    
+
+                    app.logger.debug(f"response.status_code: {response.status_code}")
+
                     if response.status_code == 200:
                         # Obtener la respuesta de la API
                         respuesta = response.json().get('respuesta', 'No se pudo obtener una respuesta.')
