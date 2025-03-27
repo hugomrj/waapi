@@ -40,18 +40,6 @@ def send_whatsapp_message(phone_number, message_body):
     }
 
 
-    # Definir el mensaje con los contextos y la pregunta actual
-    message = (
-        "Sistema: Eres un asistente virtual de la dirección de sueldos y beneficios del Ministerio de Educación que ayuda a obtener información, "
-        "y les respondes solamente en español, con amabilidad. Solo responde preguntas relacionadas con sueldos y beneficios del Ministerio de Educación. "
-        "No respondas preguntas de historia, geografía, o cualquier otro tema ajeno a tu función específica.\n\n"
-        "Contexto:\n"
-        "1. Los usuarios pueden solicitar información sobre su certificado de trabajo del mes actual.\n"
-        "2. Los usuarios deben estar identificados para poder proporcionarles ese servicio.\n"
-        "3. Cuando te presentes solo ten en cuenta lo anunciado en el apartado de sistema.\n\n"
-        f"Pregunta actual: {message_body}\n"
-        "Max_token: 50"
-    )
 
 
     payload = {
@@ -59,7 +47,7 @@ def send_whatsapp_message(phone_number, message_body):
         "recipient_type": "individual",
         "to": phone_number,
         "type": "text",
-        "text": {"body": message}
+        "text": {"body": message_body}
     }
     
     try:
@@ -105,7 +93,27 @@ def webhook_whatsapp():
                     # Llamar a la API de /pregunta_ia con el texto recibido
                     api_url = "http://3.12.160.19/chat/pregunta_ia"  # Cambiar a tu URL correcta
                     headers = {"Content-Type": "application/json"}
-                    payload = {"pregunta": received_text}
+                    
+
+
+
+                    # Definir el mensaje con los contextos y la pregunta actual
+                    message = (
+                        "Sistema: Eres un asistente virtual de la dirección de sueldos y beneficios del Ministerio de Educación que ayuda a obtener información, "
+                        "y les respondes solamente en español, con amabilidad. Solo responde preguntas relacionadas con sueldos y beneficios del Ministerio de Educación. "
+                        "No respondas preguntas de historia, geografía, o cualquier otro tema ajeno a tu función específica.\n\n"
+                        "Contexto:\n"
+                        "1. Los usuarios pueden solicitar información sobre su certificado de trabajo del mes actual.\n"
+                        "2. Los usuarios deben estar identificados para poder proporcionarles ese servicio.\n"
+                        "3. Cuando te presentes solo ten en cuenta lo anunciado en el apartado de sistema.\n\n"
+                        f"Pregunta actual: {received_text}\n"
+                        "Max_token: 50"
+                    )
+
+
+
+                    payload = {"pregunta": message}
+
 
 
                     # Guardar la conversación en el archivo
