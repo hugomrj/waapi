@@ -23,7 +23,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.9"})
+    return jsonify({"version": "10.12   "})
 
 
 
@@ -38,8 +38,6 @@ def send_whatsapp_message(phone_number, message_body):
         "Authorization": f"Bearer {ACCESS_TOKEN}",
         "Content-Type": "application/json"
     }
-
-
 
 
     payload = {
@@ -107,9 +105,8 @@ def webhook_whatsapp():
                         "2. Los usuarios deben estar identificados para poder proporcionarles ese servicio.\n"
                         "3. Cuando te presentes solo ten en cuenta lo anunciado en el apartado de sistema.\n\n"
                         f"Pregunta actual: {received_text}\n"
-                        "Max_token: 50"
+                        f"Max_token: 50" 
                     )
-
 
 
                     payload = {"pregunta": message}
