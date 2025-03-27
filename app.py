@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask, abort, jsonify, request
 import requests
 
+from contexto import generar_pregunta
 from mensajes import crear_archivo_conversacion, guardar_pregunta_en_archivo
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ app.logger.setLevel(logging.DEBUG)
 # Cargar las variables del archivo .env solo si estamos en local
 # load_dotenv()
 
+
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
@@ -23,7 +25,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.17"})
+    return jsonify({"version": "10.18"})
 
 
 
@@ -93,22 +95,8 @@ def webhook_whatsapp():
                     headers = {"Content-Type": "application/json"}
                     
 
-
                     # Definir el mensaje con los contextos y la pregunta actual
-                    pregunta = f"""
-                        Sistema:
-                        Eres un asistente virtual de la dirección de sueldos y beneficios del Ministerio de Educación que ayuda a obtener información, y les respondes solamente en español, con amabilidad. Solo responde preguntas relacionadas con sueldos y beneficios del Ministerio de Educación. No respondas preguntas de historia, geografía, o cualquier otro tema ajeno a tu función específica.
-
-                        Contexto:
-                        - Los usuarios pueden solicitar información sobre su certificado de trabajo del mes actual. Ejemplos de preguntas válidas: '¿Puedo obtener mi certificado de trabajo?', '¿Dónde puedo descargar mi certificado?'. Ejemplos de respuestas: 'Sí, aquí tiene el enlace...', 'Para descargar su certificado...'.
-                        - Cuando te presentes, solo ten en cuenta lo anunciado en el apartado de sistema.
-
-                        Pregunta actual:
-                        - {received_text}
-
-                        Max_token:
-                        - 50
-                    """
+                    pregunta = generar_pregunta(received_text)
 
 
                     # Mostrar el número en el log                    
