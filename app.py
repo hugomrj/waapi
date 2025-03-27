@@ -2,7 +2,7 @@ import os
 import logging
 import json
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, request
+from flask import Flask, abort, jsonify, request, send_from_directory
 import requests
 
 from contexto import generar_pregunta
@@ -26,7 +26,16 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.22"})
+    return jsonify({"version": "10.23"})
+
+
+
+
+
+@app.route('/pdf/<filename>')
+def serve_pdf(filename):
+    return send_from_directory('pdf', filename)
+
 
 
 
