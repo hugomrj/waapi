@@ -7,6 +7,7 @@ import requests
 
 from contexto import generar_pregunta
 from mensajes import crear_archivo_conversacion, guardar_pregunta_en_archivo
+from usuario import buscar_usuario
 
 app = Flask(__name__)
 
@@ -25,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.18"})
+    return jsonify({"version": "10.19"})
 
 
 
@@ -95,14 +96,19 @@ def webhook_whatsapp():
                     headers = {"Content-Type": "application/json"}
                     
 
+                    usuario = buscar_usuario(from_number)
+                    if usuario:
+                        usuario = f"El usuario se llama {usuario}"                        
+
+
                     # Definir el mensaje con los contextos y la pregunta actual
                     pregunta = generar_pregunta(received_text)
 
 
                     # Mostrar el número en el log                    
-                    app.logger.debug(f"pregunta : \n{pregunta}")
+                    # app.logger.debug(f"pregunta : \n{pregunta}")
 
-                               # Guardar la conversación en el archivo
+                    # Guardar la conversación en el archivo
                     crear_archivo_conversacion(from_number)                               
                     guardar_pregunta_en_archivo(from_number, received_text)         
 

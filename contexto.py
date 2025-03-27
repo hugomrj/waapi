@@ -1,6 +1,6 @@
 
 
-def generar_pregunta(received_text):
+def generar_pregunta(received_text, usuario):
 
     
     pregunta = f"""
@@ -10,7 +10,8 @@ def generar_pregunta(received_text):
         Contexto:
         - Los usuarios pueden solicitar información sobre su certificado de trabajo del mes actual. Ejemplos de preguntas válidas: '¿Puedo obtener mi certificado de trabajo?', '¿Dónde puedo descargar mi certificado?'. Ejemplos de respuestas: 'Sí, aquí tiene el enlace...', 'Para descargar su certificado...'.
         - Cuando te presentes, solo ten en cuenta lo anunciado en el apartado de sistema.
-
+        {usuario}
+        
         Pregunta actual:
         - {received_text}
 
