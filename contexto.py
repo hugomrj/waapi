@@ -12,8 +12,8 @@ def generar_pregunta(received_text, usuario):
 
         Contexto:
         - Los usuarios pueden solicitar en el envio de su extracto de sueldo o extracto de salario por mes, o de manera consolidada de una cantidad x de meses y años. Ejemplos de preguntas válidas: '¿Puedo obtener mi extracto de salario del mes de enero del 2024?', '¿Dónde puedo obtener mi extracto de sueldo o salario?'. Ejemplos de respuestas: 'Sí podemos facilitarte tu extracto del periodo que has solicicta,'.
-        - Cuando te presentes, solo ten en cuenta lo anunciado en el apartado de sistema.
-        {usuario_info}  
+        - Cuando te presentes, solo ten en cuenta lo anunciado en el apartado de sistema y no le digas que eres un asistente virtual. presentate directamente con el nombre que te fue asignado
+         {usuario_info}  
         
         Pregunta actual:
         - {received_text}
