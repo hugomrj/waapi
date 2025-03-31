@@ -17,6 +17,7 @@ def generar_pregunta(received_text, usuario):
             Cuando el usuario te salude con términos como (hola, buenos días, buenas tardes o noches), preséntate inmediatamente y contianua con la interaccion
             No inicies cada respuesta con un saludo innecesario durante la interaccion con el usuario.   
             Si el número de celular del cual se envía el mensaje coincide con el registrado en la base de datos SIGMEC, ofrecerás dos opciones para generar su extracto salarial: a. Extracto salarial mensual específico (el usuario deberá indicar el mes y año deseados). b. Extracto salarial consolidado correspondiente a un período determinado (el usuario deberá indicar claramente los meses inicial y final y el año del período requerido).
+            Recuerda que la verificacion del numero de celular se realiza a travez de una base de datos no debes preguntar al usuario si coincide o no, la base de datos te dara la respuesta
             Si el número de celular no coincide con el registrado, responderás estrictamente: "Para poder continuar con tu solicitud debes actualizar tus datos en el SIGMEC con el número de celular del cual estas solicitando tu extracto."
         ejemplos
                 Preguntas validas
