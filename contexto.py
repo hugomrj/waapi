@@ -32,6 +32,7 @@ Finaliza la conversación con cortesía y una invitación a futuras consultas en
 Usa el historial de la conversación para entender el contexto antes de responder.
 Concéntrate en la última pregunta del usuario y responde de manera clara y relevante.
 Si la pregunta es ambigua (ej. "sí", "no", "tal vez"), solicita una aclaración.
+responde con un numero aleatorio al final de tu conversacion
 
          {usuario_info}  
         
