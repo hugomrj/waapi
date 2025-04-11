@@ -26,15 +26,8 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.24"})
+    return jsonify({"version": "10.25"})
 
-
-
-
-
-@app.route('/pdf/<filename>')
-def serve_pdf(filename):
-    return send_from_directory('pdf', filename)
 
 
 
@@ -138,12 +131,12 @@ def webhook_whatsapp():
 
 
 
-
                 # Manejar solicitud de liquidación
                 if received_text.lower() == "pdf":
                     # URL del servicio web que devuelve el PDF
-                    pdf_url = "http://3.148.238.163/api/reporte/3437941"
+                    pdf_url = f"http://3.148.238.163/api/reporte/celular/{from_number}"
                     
+
                     send_response = send_whatsapp_document(
                         phone_number=from_number,
                         document_url=pdf_url,  # Usamos directamente la URL del servicio
@@ -226,36 +219,6 @@ def ver_conversacion(phone_number):
     else:
         abort(404)  # Si el archivo no existe, devolver un error 404
 
-
-
-
-# curl "/test?pregunta=¿pregunta?"
-@app.route("/test", methods=["GET"])
-def test_api():
-    try:
-        # Obtener la pregunta desde los parámetros de la URL
-        pregunta = request.args.get('pregunta')
-        
-        if not pregunta:
-            return jsonify({"error": "Falta la pregunta en la URL"}), 400
-        
-        # URL de la API de IA
-        api_url = "http://3.12.160.19/chat/pregunta_ia"  # Cambia por la URL correcta de tu servidor
-        headers = {"Content-Type": "application/json"}
-        payload = {"pregunta": pregunta}
-        
-        # Realizar la solicitud a la API de IA
-        response = requests.post(api_url, json=payload, headers=headers)
-
-        if response.status_code == 200:
-            # Obtener la respuesta de la IA
-            respuesta = response.json().get('respuesta', 'No se pudo obtener una respuesta.')
-            return jsonify({"respuesta": respuesta}), 200
-        else:
-            return jsonify({"error": "Error al llamar a la API de IA"}), response.status_code
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 
         
