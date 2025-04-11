@@ -26,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.23"})
+    return jsonify({"version": "10.24"})
 
 
 
@@ -141,15 +141,19 @@ def webhook_whatsapp():
 
                 # Manejar solicitud de liquidación
                 if received_text.lower() == "pdf":
-                    pdf_url = url_for('serve_pdf', filename='liquidacion.pdf', _external=True)
+                    # URL del servicio web que devuelve el PDF
+                    pdf_url = "http://3.148.238.163/api/reporte/3437941"
+                    
                     send_response = send_whatsapp_document(
                         phone_number=from_number,
-                        document_url=pdf_url,
+                        document_url=pdf_url,  # Usamos directamente la URL del servicio
                         filename="liquidacion.pdf",
                         caption="Aquí tienes tu liquidación oficial"
                     )
-                    return jsonify({"status": "document sent" if send_response else "error sending document"}), 200 if send_response else 500
-
+                    
+                    return jsonify({
+                        "status": "document sent" if send_response else "error sending document"
+                    }), 200 if send_response else 500
 
 
 
