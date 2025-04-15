@@ -30,7 +30,6 @@ def version():
 
 
 
-
 # Añade esta nueva función para documentos
 def send_whatsapp_document(phone_number, document_url, filename, caption=None):
     """Envía un documento PDF a través de la API de WhatsApp Business"""
