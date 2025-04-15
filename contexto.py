@@ -12,6 +12,12 @@ def generar_pregunta(received_text, usuario, celular):
     # Obtener conversaciones anteriores
     conversaciones_anteriores = obtener_conversaciones_anteriores(celular)
 
+
+    # Obtener contexto adicional si existe    
+    contexto_adicional = agregar_contexto_adicional(received_text)
+
+
+
     pregunta = f"""
         Sistema
             Tu nombre es Natal.IA y perteneces a la Dirección de Sueldos y Beneficios del Ministerio de Educación y Ciencias. Tu función exclusiva es facilitar la obtención del extracto de salario o liquidación de sueldo a los funcionarios de la institución. Debes responder únicamente en español, manteniendo siempre un estilo formal, amigable y empático.
@@ -49,6 +55,8 @@ def generar_pregunta(received_text, usuario, celular):
         
         Pregunta actual:
         - {received_text}
+
+        {contexto_adicional}
 
         Max_token:
         - 50
@@ -94,3 +102,25 @@ def obtener_conversaciones_anteriores(celular):
         return f"Error de conexión: {str(e)}"
     except Exception as e:
         return f"Error inesperado: {str(e)}"
+    
+
+
+
+
+
+
+def agregar_contexto_adicional(received_text):
+    contexto_extra = []
+    texto_lower = received_text.lower()
+    
+    
+    if any(palabra in texto_lower for palabra in ['extracto', 'estracto']):
+        contexto_extra.append("si el usuario te pide su estracto devuelve solo imprimir_estracto_actual")
+    
+    '''
+    if any(palabra in texto_lower for palabra in ['certificado', 'sueldo']):
+        contexto_extra.append("para certificados de sueldo: generar_certificado_sueldo_pdf")
+    '''
+
+    # Retornar concatenado si hay coincidencias
+    return "Contexto adicional: " + " | ".join(contexto_extra) if contexto_extra else ""

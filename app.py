@@ -132,24 +132,6 @@ def webhook_whatsapp():
                 received_text = message.get('text', {}).get('body', '')
 
 
-                '''
-                # Manejar solicitud de liquidación
-                if received_text.lower() == "pdf":
-                    # URL del servicio web que devuelve el PDF
-                    pdf_url = f"http://3.148.238.163/api/reporte/celular/{from_number}"
-                    
-
-                    send_response = send_whatsapp_document(
-                        phone_number=from_number,
-                        document_url=pdf_url,  # Usamos directamente la URL del servicio
-                        filename="liquidacion.pdf",
-                        caption="Aquí tienes tu liquidación oficial"
-                    )
-                    
-                    return jsonify({
-                        "status": "document sent" if send_response else "error sending document"
-                    }), 200 if send_response else 500
-                '''
 
 
 
@@ -206,6 +188,24 @@ def webhook_whatsapp():
                             print(json.dumps(resultado, indent=2))
 
 
+
+
+                        
+                        # Manejar solicitud de liquidación
+                        if respuesta.lower() == "imprimir_estracto_actual":
+                            # URL del servicio web que devuelve el PDF
+                            pdf_url = f"http://3.148.238.163/api/reporte/celular/{from_number}"
+                            
+                            send_response = send_whatsapp_document(
+                                phone_number=from_number,
+                                document_url=pdf_url,  # Usamos directamente la URL del servicio
+                                filename="liquidacion.pdf",
+                                caption="Aquí tienes tu liquidación oficial"
+                            )                            
+                            return jsonify({
+                                "status": "document sent" if send_response else "error sending document"
+                            }), 200 if send_response else 500
+                        
 
 
                         # Enviar la respuesta a WhatsApp
