@@ -26,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.37"})
+    return jsonify({"version": "10.38"})
 
 
 
@@ -132,88 +132,61 @@ def webhook_whatsapp():
                 received_text = message.get('text', {}).get('body', '')
 
 
-
-
-
-
                 if from_number and received_text:
-                    # Llamar a la API de /pregunta_ia con el texto recibido
-                    api_url = "http://3.12.160.19/chat/pregunta_ia"  # Cambiar a tu URL correcta
+                    # 1. Configuración inicial
+                    api_url = "http://3.12.160.19/chat/pregunta_ia"
                     headers = {"Content-Type": "application/json"}
                     
-
+                    # 2. Obtener información del usuario
                     usuario = buscar_usuario(from_number)
-                    if usuario:
-                        usuario = f"El usuario se llama {usuario}"                        
-                    app.logger.debug(f"usuario  : {usuario}")
+                    usuario_info = f"El usuario se llama {usuario}" if usuario else ""
+                    app.logger.debug(f"Usuario: {usuario_info}")
 
+                    # 3. Generar y guardar contexto
+                    pregunta = generar_pregunta(received_text, usuario_info, from_number)
+                    guardar_contexto_en_archivo(pregunta)
+                    app.logger.debug(f"Consulta recibida de {from_number}")
 
-                    # Definir el mensaje con los contextos y la pregunta actual
-                    pregunta = generar_pregunta(received_text, usuario, from_number )
-
-                    guardar_contexto_en_archivo(pregunta)     
-
-
-                    # Mostrar el número en el log                    
-                    # app.logger.debug(f"pregunta : \n{pregunta}")
-
-                    # Guardar la conversación en el archivo
-                    # crear_archivo_conversacion(from_number)                               
+                    # 4. Consultar a la IA
+                    try:
+                        response = requests.post(api_url, json={"pregunta": pregunta}, headers=headers, timeout=10)
+                        response.raise_for_status()  # Lanza excepción para códigos 4XX/5XX
                         
-
-                    # Mostrar el número en el log                    
-                    app.logger.debug(f"Se recibió el número: {from_number}")
-
-
-                    # Realizar la solicitud POST a la API
-                    response = requests.post(api_url, json={"pregunta": pregunta}, headers=headers)                    
-
-                    app.logger.debug(f"response.status_code: {response.status_code}")
-
-                    if response.status_code == 200:
-                        # Obtener la respuesta de la API
-                        respuesta = response.json().get('respuesta', 'No se pudo obtener una respuesta.')
-
-
-                        # llamada api para guardar conversacion a base de datos
-
-                        # Datos de prueba
-                        resultado = registrar_conversacion_chat(
-                            from_number,
-                            received_text,
-                            respuesta
-                        )                        
-                        if resultado:
-                            print("Respuesta del servidor:")
-                            print(json.dumps(resultado, indent=2))
-
-
-
-
+                        respuesta = response.json().get('respuesta', '').strip().lower()
                         
-                        # Manejar solicitud de liquidación
-                        if respuesta.lower() == "imprimir_estracto_actual":
-                            # URL del servicio web que devuelve el PDF
+                        # 5. Registrar en base de datos
+                        registrar_conversacion_chat(from_number, received_text, respuesta)
+                        
+                        # 6. Manejo de comando especial para extracto PDF
+                        if respuesta == "imprimir_estracto_actual_pdf":
                             pdf_url = f"http://3.148.238.163/api/reporte/celular/{from_number}"
                             
-                            send_response = send_whatsapp_document(
-                                phone_number=from_number,
-                                document_url=pdf_url,  # Usamos directamente la URL del servicio
-                                filename="liquidacion.pdf",
-                                caption="Aquí tienes tu liquidación oficial"
-                            )                            
-                            return jsonify({
-                                "status": "document sent" if send_response else "error sending document"
-                            }), 200 if send_response else 500
+                            # Verificar disponibilidad del PDF
+                            pdf_check = requests.head(pdf_url, timeout=5)
+                            if pdf_check.status_code == 200:
+                                if send_whatsapp_document(
+                                    phone_number=from_number,
+                                    document_url=pdf_url,
+                                    filename="extracto.pdf",
+                                    caption="Aquí tienes tu extracto oficial"
+                                ):
+                                    return jsonify({"status": "document sent"}), 200
+                            
+                            # Si falla cualquiera de los pasos anteriores
+                            error_msg = "Lo siento, no pude generar tu extracto en este momento. Por favor intenta más tarde."
+                            send_whatsapp_message(from_number, error_msg)
+                            return jsonify({"status": "pdf generation failed"}), 200
                         
+                        # 7. Respuesta normal de texto
+                        send_whatsapp_message(from_number, respuesta)
+                        return jsonify({"status": "message sent"}), 200
 
+                    except requests.exceptions.RequestException as e:
+                        app.logger.error(f"Error en la API: {str(e)}")
+                        error_msg = "Disculpa, estoy teniendo problemas técnicos. Por favor intenta nuevamente más tarde."
+                        send_whatsapp_message(from_number, error_msg)
+                        return jsonify({"status": "service unavailable", "error": str(e)}), 200
 
-                        # Enviar la respuesta a WhatsApp
-                        send_response = send_whatsapp_message(from_number, respuesta)
-                        return jsonify({"status": "message sent" if send_response else "error sending message"}), 200 if send_response else 500
-                    else:
-                        return jsonify({"status": "error", "message": "Error from API"}), response.status_code
-            
             return jsonify({"status": "not a whatsapp message"}), 200
         
         except Exception as e:
