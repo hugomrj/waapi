@@ -26,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.33"})
+    return jsonify({"version": "10.34"})
 
 
 
@@ -167,7 +167,7 @@ def webhook_whatsapp():
 
 
                     # Definir el mensaje con los contextos y la pregunta actual
-                    pregunta = generar_pregunta(received_text, usuario)
+                    pregunta = generar_pregunta(received_text, usuario, from_number )
 
                     guardar_contexto_en_archivo(pregunta)     
 
