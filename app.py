@@ -192,9 +192,9 @@ def webhook_whatsapp():
 
                         # Datos de prueba
                         resultado = registrar_conversacion_chat(
-                            celular="59112345678",
-                            pregunta="Pregunta de prueba",
-                            respuesta="Respuesta fija"
+                            celular=from_number,
+                            pregunta=pregunta,
+                            respuesta=respuesta
                         )
                         
                         if resultado:
