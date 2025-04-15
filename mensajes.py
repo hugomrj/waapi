@@ -110,6 +110,10 @@ def registrar_conversacion_chat(celular, pregunta, respuesta):
             timeout=10  # Timeout de 10 segundos
         )
         
+
+        # Mostrar los datos en consola
+        print("Datos a enviar:", json.dumps(datos, indent=4))
+
         # Verificar la respuesta
         if respuesta_servidor.status_code == 201:
             print("✅ Conversación registrada con éxito")

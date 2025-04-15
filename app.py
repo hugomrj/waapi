@@ -26,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.30"})
+    return jsonify({"version": "10.31"})
 
 
 
@@ -195,8 +195,7 @@ def webhook_whatsapp():
                             from_number,
                             received_text,
                             respuesta
-                        )
-                        
+                        )                        
                         if resultado:
                             print("Respuesta del servidor:")
                             print(json.dumps(resultado, indent=2))
