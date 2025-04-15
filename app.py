@@ -26,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.40"})
+    return jsonify({"version": "10.41"})
 
 
 
@@ -163,7 +163,7 @@ def webhook_whatsapp():
                             pdf_url = f"http://3.148.238.163/api/reporte/celular/{from_number}"
                             
                             # Verificar disponibilidad del PDF
-                            pdf_check = requests.head(pdf_url, timeout=5)
+                            pdf_check = requests.head(pdf_url, timeout=30)
                             if pdf_check.status_code == 200:
                                 if send_whatsapp_document(
                                     phone_number=from_number,
