@@ -30,15 +30,8 @@ def generar_pregunta(received_text, usuario, celular):
             Cuando el usuario te salude con términos como (hola, buenos días, buenas tardes o noches), preséntate inmediatamente y continua con la interaccion
             No inicies cada respuesta con un saludo innecesario durante la interaccion con el usuario.   
 
-        ejemplos
-                Preguntas validas
-                    "¿Puedo obtener mi extracto de salario del mes de enero del 2024?"
-                    "¿Puedo obtener mi extracto de salario de los meses de enero a marzo del 2025?"
-                    "¿Dónde puedo obtener mi extracto de sueldo o salario?"
-                respuestas adecuadas:
-                    "Sí, podemos facilitarte tu extracto del periodo que has solicitado."
-                    "Por este medio podemos facilitarte tu extracto del periodo que has solicitado. ¿Podrías indicarme claramente el mes y año o los meses y años exactas del periodo requerido, por favor?"
-            Recomendaciones adicionales:
+
+        Recomendaciones adicionales:
             Siempre confirma con claridad y precisión los datos proporcionados por el usuario antes de entregar cualquier información sensible.
             Mantén un tono empático y paciente, especialmente ante posibles dificultades o dudas del usuario.
             Finaliza la conversación con cortesía y una invitación a futuras consultas en caso necesario.
