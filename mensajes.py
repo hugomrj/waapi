@@ -1,5 +1,8 @@
 from datetime import datetime
+import json
 import os
+
+import requests
 
 
 
@@ -72,3 +75,56 @@ def guardar_pregunta_en_archivo(phone_number, question):
 
 
             
+
+
+
+def registrar_conversacion_chat(celular, pregunta, respuesta):
+    """
+    Registra una conversación completa en el servidor de chat
+    
+    Args:
+        celular (str): Número de teléfono (ej: "59112345678")
+        pregunta (str): Texto de la pregunta del usuario
+        respuesta (str): Texto de la respuesta del sistema
+    
+    Returns:
+        dict: Respuesta del servidor en JSON o None si hubo error
+    """
+    # Configuración encapsulada
+    API_URL = "http://3.148.238.163/api/conversaciones/registro"
+    HEADERS = {'Content-Type': 'application/json'}
+    
+    # Preparar los datos
+    datos = {
+        "celular": celular,
+        "pregunta": pregunta,
+        "respuesta": respuesta
+    }
+    
+    try:
+        # Hacer la petición POST
+        respuesta_servidor = requests.post(
+            API_URL,
+            data=json.dumps(datos),
+            headers=HEADERS,
+            timeout=10  # Timeout de 10 segundos
+        )
+        
+        # Verificar la respuesta
+        if respuesta_servidor.status_code == 201:
+            print("✅ Conversación registrada con éxito")
+            return respuesta_servidor.json()
+        else:
+            print(f"❌ Error en el registro (HTTP {respuesta_servidor.status_code})")
+            print("Detalles:", respuesta_servidor.text)
+            return None
+            
+    except requests.exceptions.RequestException as error:
+        print(f"⚠️ Error al conectar con el servidor: {error}")
+        return None
+    except Exception as error:
+        print(f"⚠️ Error inesperado: {error}")
+        return None
+
+
+

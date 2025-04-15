@@ -6,7 +6,7 @@ from flask import Flask, abort, jsonify, request, send_from_directory, url_for
 import requests
 
 from contexto import generar_pregunta
-from mensajes import crear_archivo_conversacion, guardar_pregunta_en_archivo
+from mensajes import crear_archivo_conversacion, guardar_pregunta_en_archivo, registrar_conversacion_chat
 from usuario import buscar_usuario
 
 app = Flask(__name__)
@@ -129,7 +129,7 @@ def webhook_whatsapp():
                 received_text = message.get('text', {}).get('body', '')
 
 
-
+                '''
                 # Manejar solicitud de liquidación
                 if received_text.lower() == "pdf":
                     # URL del servicio web que devuelve el PDF
@@ -146,7 +146,7 @@ def webhook_whatsapp():
                     return jsonify({
                         "status": "document sent" if send_response else "error sending document"
                     }), 200 if send_response else 500
-
+                '''
 
 
 
@@ -186,6 +186,23 @@ def webhook_whatsapp():
                     if response.status_code == 200:
                         # Obtener la respuesta de la API
                         respuesta = response.json().get('respuesta', 'No se pudo obtener una respuesta.')
+
+
+                        # llamada api para guardar conversacion a base de datos
+
+                        # Datos de prueba
+                        resultado = registrar_conversacion_chat(
+                            celular="59112345678",
+                            pregunta="Pregunta de prueba",
+                            respuesta="Respuesta fija"
+                        )
+                        
+                        if resultado:
+                            print("Respuesta del servidor:")
+                            print(json.dumps(resultado, indent=2))
+
+
+
 
                         # Enviar la respuesta a WhatsApp
                         send_response = send_whatsapp_message(from_number, respuesta)
