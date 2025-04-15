@@ -26,7 +26,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.39"})
+    return jsonify({"version": "10.40"})
 
 
 
@@ -157,8 +157,9 @@ def webhook_whatsapp():
                         # 5. Registrar en base de datos
                         registrar_conversacion_chat(from_number, received_text, respuesta)
                         
+
                         # 6. Manejo de comando especial para extracto PDF
-                        if respuesta == "imprimir_estracto_actual_pdf":
+                        if respuesta == "imprimir_estracto_actual":
                             pdf_url = f"http://3.148.238.163/api/reporte/celular/{from_number}"
                             
                             # Verificar disponibilidad del PDF
