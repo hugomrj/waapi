@@ -2,11 +2,11 @@ import os
 import logging
 import json
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, request, send_from_directory, url_for
+from flask import Flask, Response, abort, jsonify, request
 import requests
 
 from contexto import generar_pregunta
-from mensajes import crear_archivo_conversacion, guardar_pregunta_en_archivo, registrar_conversacion_chat
+from mensajes import  guardar_contexto_en_archivo, registrar_conversacion_chat
 from usuario import buscar_usuario
 
 app = Flask(__name__)
@@ -26,7 +26,10 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 @app.route('/version')
 def version():
-    return jsonify({"version": "10.31"})
+    return jsonify({"version": "10.32"})
+
+
+
 
 
 
@@ -166,13 +169,15 @@ def webhook_whatsapp():
                     # Definir el mensaje con los contextos y la pregunta actual
                     pregunta = generar_pregunta(received_text, usuario)
 
+                    guardar_contexto_en_archivo(pregunta)     
+
 
                     # Mostrar el número en el log                    
                     # app.logger.debug(f"pregunta : \n{pregunta}")
 
                     # Guardar la conversación en el archivo
-                    crear_archivo_conversacion(from_number)                               
-                    guardar_pregunta_en_archivo(from_number, received_text)         
+                    # crear_archivo_conversacion(from_number)                               
+                        
 
                     # Mostrar el número en el log                    
                     app.logger.debug(f"Se recibió el número: {from_number}")
@@ -219,20 +224,33 @@ def webhook_whatsapp():
 
 
 
-@app.route('/ver_conversacion/<phone_number>', methods=['GET'])
-def ver_conversacion(phone_number):
-    # Definir la ruta del archivo basado en el número de teléfono
-    carpeta = 'mensajes_log'
-    archivo_path = os.path.join(carpeta, f'{phone_number}.txt')
-
-    # Verifica si el archivo existe
-    if os.path.exists(archivo_path):
-        # Abrir el archivo y leer su contenido
-        with open(archivo_path, 'r') as archivo:
-            contenido = archivo.read()
-        return contenido  # Devolver el contenido del archivo en el navegador
-    else:
-        abort(404)  # Si el archivo no existe, devolver un error 404
+@app.route('/ver_contexto', methods=['GET'])
+def ver_contexto():
+    """
+    Endpoint para visualizar el contenido del archivo contexto_log.txt
+    Devuelve el contenido formateado como texto plano con separadores claros
+    """
+    archivo_path = 'contexto_log.txt'
+    
+    if not os.path.exists(archivo_path):
+        return Response("No hay registros de contexto disponibles", mimetype='text/plain')
+    
+    try:
+        with open(archivo_path, 'r', encoding='utf-8') as f:
+            contenido = f.read()
+        
+        # Formatear para mejor visualización
+        respuesta = (
+            "=== REGISTRO DE CONTEXTO ===\n\n"
+            f"{contenido}\n"
+            "=== FIN DEL REGISTRO ==="
+        )
+        
+        return Response(respuesta, mimetype='text/plain')
+    
+    except Exception as e:
+        error_msg = f"Error al leer el archivo: {str(e)}"
+        return Response(error_msg, status=500, mimetype='text/plain')
 
 
 

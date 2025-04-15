@@ -7,7 +7,7 @@ import requests
 
 
 
-
+'''
 def crear_archivo_conversacion(phone_number):
     # Definir la ruta de la carpeta donde se guardarán las conversaciones
     carpeta = 'mensajes_log'
@@ -23,55 +23,49 @@ def crear_archivo_conversacion(phone_number):
             pass  # No agregamos texto al archivo si no existe
 
     return archivo_path
+'''
 
 
 
 
 
-
-def obtener_conversaciones(archivo_path):
-    # Leer el archivo y cargar las preguntas
-    with open(archivo_path, 'r') as archivo:
-        lineas = archivo.readlines()
+def guardar_contexto_en_archivo(contexto):
+    """
+    Guarda el contexto en un archivo de log, agregándolo al inicio del archivo
+    y desplazando el contenido existente hacia abajo.
     
-    # Convertir las líneas en un formato de preguntas con fechas
-    preguntas = []
-    for i in range(0, len(lineas), 3):
-        if i + 1 < len(lineas):
-            fecha = lineas[i].strip().split(": ")[1]
-            pregunta = lineas[i + 1].strip().split(": ")[1]
-            preguntas.append((fecha, pregunta))
+    Args:
+        contexto (str): Texto con el contexto a guardar
     
-    return preguntas
-
-
-
-
-
-def guardar_pregunta_en_archivo(phone_number, question):
-    # Obtener la fecha y hora actual
-    fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    # Crear el archivo si no existe
-    archivo_path = crear_archivo_conversacion(phone_number)
-
-    # Obtener las preguntas existentes
-    preguntas = obtener_conversaciones(archivo_path)
-
-    # Agregar la nueva pregunta al inicio de la lista
-    preguntas.insert(0, (fecha_actual, question))
-
-    # Si hay más de 5 preguntas, eliminar la más antigua
-    if len(preguntas) > 5:
-        preguntas.pop()
-
-    # Reescribir el archivo con las preguntas ordenadas
-    with open(archivo_path, 'w') as archivo:
-        for fecha, pregunta in preguntas:
-            archivo.write(f"Fecha: {fecha}\n")
-            archivo.write(f"Pregunta: {pregunta}\n\n")
-
-
+    Returns:
+        bool: True si se guardó correctamente, False si hubo error
+    """
+    try:
+        # Obtener fecha y hora actual formateada
+        fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        separador = "=" * 50
+        
+        # Formatear el nuevo contenido
+        nuevo_contenido = f"{separador}\n[{fecha_hora}]\n{contexto}\n{separador}\n\n"
+        
+        # Nombre del archivo
+        archivo = "contexto_log.txt"
+        
+        # Leer contenido existente si el archivo existe
+        contenido_existente = ""
+        if os.path.exists(archivo):
+            with open(archivo, 'r', encoding='utf-8') as f:
+                contenido_existente = f.read()
+        
+        # Escribir nuevo contenido + contenido existente
+        with open(archivo, 'w', encoding='utf-8') as f:
+            f.write(nuevo_contenido + contenido_existente)
+        
+        return True
+    
+    except Exception as e:
+        print(f"Error al guardar contexto: {str(e)}")
+        return False    
 
 
             
