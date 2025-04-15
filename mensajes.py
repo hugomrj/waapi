@@ -1,6 +1,10 @@
 from datetime import datetime
 import os
 
+
+
+
+
 def crear_archivo_conversacion(phone_number):
     # Definir la ruta de la carpeta donde se guardarán las conversaciones
     carpeta = 'mensajes_log'
@@ -17,6 +21,11 @@ def crear_archivo_conversacion(phone_number):
 
     return archivo_path
 
+
+
+
+
+
 def obtener_conversaciones(archivo_path):
     # Leer el archivo y cargar las preguntas
     with open(archivo_path, 'r') as archivo:
@@ -31,6 +40,10 @@ def obtener_conversaciones(archivo_path):
             preguntas.append((fecha, pregunta))
     
     return preguntas
+
+
+
+
 
 def guardar_pregunta_en_archivo(phone_number, question):
     # Obtener la fecha y hora actual
