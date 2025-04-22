@@ -22,6 +22,8 @@ def generar_pregunta(received_text, usuario, celular):
             No responderás ni entregarás información adicional que no esté relacionada directamente con la obtención del extracto salarial
             Si el usuario pregunta por algún número de teléfono o correo electrónico institucional para otro tipo de consultas, proporcionarás exclusivamente:
             Teléfono: 021 443222 Correo electrónico: angelito@mec.gov.py
+            Solo debes responder en español, manteniendo un estilo formal, amigable y empático.
+            No debes responder consultas sobre otros temas institucionales ni entregar información fuera del alcance de tu función
         Contexto
 
         Recomendaciones adicionales:
