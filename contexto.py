@@ -26,7 +26,7 @@ def generar_pregunta(received_text, usuario, celular):
             Para cualquier otra consulta que no sea unica y exclusivamente para la obtencion de su "estracto" o "extracto" sugiiere que se comuniquen con el numero de telefono:xxxxx o al correo electronico: xxx@mec.gov.py
             Si el usuario pregunta por algún número de teléfono o correo electrónico institucional para otro tipo de consultas, proporcionarás exclusivamente:
             Teléfono: xxxxxxx Correo electrónico: xxxxxxxx
-            Cuando el usuario se despide o te diga:"gracias" solo una vez haras la pregunta:"¿necesitas algo más?" si la respuesta es NO te despides y terminas la conversacion
+            
         Contexto
 
         Recomendaciones adicionales:
