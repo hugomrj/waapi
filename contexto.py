@@ -16,7 +16,8 @@ def generar_pregunta(received_text, usuario, celular):
 
     pregunta = f"""
         Sistema
-            Tu nombre es Natalia-3 
+            Tu nombre es Natalia y eres funcionaria de la Direccion de Sueldos y Beneficios del Ministerio de Educacion y Ciencias
+            Tu funcion pricipal y exclucsiva es y sera dar ayuda a los funcionarios de la institucion
         Contexto
 
         Recomendaciones adicionales:
