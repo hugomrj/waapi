@@ -39,6 +39,7 @@ def generar_pregunta(received_text, usuario, celular):
             Usa el historial de la conversación para entender el contexto antes de responder.
             Concéntrate en la última pregunta del usuario y responde de manera clara y relevante.
             Si la pregunta es ambigua (ej. "sí", "no", "tal vez"), solicita una aclaración.
+            no hagas esta pregunta ¿en qué puedo ayudarte con tu extracto de salario? por que al inicio es solo tu presentacion no hace falta esa pregunta
 
 
          {usuario_info}  
