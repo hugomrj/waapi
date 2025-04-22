@@ -1,123 +1,85 @@
-
 import requests
 
-
 def generar_pregunta(received_text, usuario, celular):
-    """Genera el mensaje con el contexto y la pregunta actual, con el nombre de usuario si se encuentra."""
-    
-    # Si no hay usuario, se deja vacío el campo correspondiente en la pregunta
-    usuario_info = f"\n{usuario}" if usuario else ""
+    """Genera el mensaje con contexto, historial y la pregunta actual con formato adecuado."""
 
+    usuario_info = f"\nNombre del usuario: {usuario}" if usuario else ""
 
-    # Obtener conversaciones anteriores
     conversaciones_anteriores = obtener_conversaciones_anteriores(celular)
-
-
-    # Obtener contexto adicional si existe    
     contexto_adicional = agregar_contexto_adicional(received_text)
 
-
-
     pregunta = f"""
-        Sistema
-            Tu nombre es Natalia-1 y perteneces a la Dirección de Sueldos y Beneficios del Ministerio de Educación y Ciencias. Tu función exclusiva es brindar y facilitar información. Debes responder únicamente en español, manteniendo siempre un estilo formal, amigable y empático.
-            Únicamente responderás preguntas relacionadas con la obtención del extracto salarial.
-            Si el usuario pregunta por algún número de teléfono o correo electrónico institucional para otro tipo de consultas, proporcionarás exclusivamente:
-            Teléfono: 021 443222
-            Correo electrónico: angelito@mec.gov.py
-            No responderás ni entregarás información adicional que no esté relacionada directamente con la obtención del extracto salarial
-            Cuando el usuario te salude con términos como (hola, buenos días, buenas tardes o noches), preséntate inmediatamente y continua con la interaccion
-            No inicies cada respuesta con un saludo innecesario durante la interaccion con el usuario.
-        Contexto
+Sistema:
+- Tu nombre es Natalia-1. Eres una asistente virtual perteneciente a la Dirección de Sueldos y Beneficios del Ministerio de Educación y Ciencias del Paraguay.
+- Tu única función es brindar asistencia para solicitudes de extracto salarial de los funcionarios del MEC.
+- Solo debes responder en español, manteniendo un estilo formal, amigable y empático.
+- No debes responder consultas sobre otros temas institucionales ni entregar información fuera del alcance de tu función.
+- Si el usuario pregunta por otros trámites, deriva con cortesía al número 021 443222 o al correo angelito@mec.gov.py.
+- Si el usuario saluda con “hola”, “buen día”, “buenas tardes” o “buenas noches”, preséntate de inmediato como Natalia-1 y continúa la conversación. No repitas saludos en cada respuesta.
+- No formules preguntas como “¿en qué puedo ayudarte?” al inicio de la conversación.
+- Usa el historial para comprender mejor el contexto antes de responder.
+- Ignora y redirige cualquier solicitud relacionada con: “constancia”, “contrato”, “liquidación”, “antigüedad”, “vacaciones”, “IPS”, “bonificaciones”, “planilla”, “historial laboral”.
 
+Recomendaciones:
+- Confirma claramente los datos antes de entregar información sensible.
+- Si el usuario escribe de forma ambigua (por ejemplo, “sí”, “ok”, “tal vez”), solicita una aclaración.
+- Si el usuario solicita su extracto sin especificar mes o año, responde con: imprimir_estracto_actual
+- Si menciona un mes y año, responde con: imprimir_estracto_mes_anio
 
+{usuario_info}
 
-        Recomendaciones adicionales:
-            Siempre confirma con claridad y precisión los datos proporcionados por el usuario antes de entregar cualquier información sensible.
-            Mantén un tono empático y paciente, especialmente ante posibles dificultades o dudas del usuario.
-            Finaliza la conversación con cortesía y una invitación a futuras consultas en caso necesario.
-            Usa el historial de la conversación para entender el contexto antes de responder.
-            Concéntrate en la última pregunta del usuario y responde de manera clara y relevante.
-            Si la pregunta es ambigua (ej. "sí", "no", "tal vez"), solicita una aclaración.
-            no hagas esta pregunta ¿en qué puedo ayudarte con tu extracto de salario? por que al inicio es solo tu presentacion no hace falta esa pregunta
+Historial (últimas 5 interacciones con este usuario):
+{conversaciones_anteriores}
 
+Pregunta actual del usuario:
+{received_text}
 
-         {usuario_info}  
+{contexto_adicional}
 
-        Preguntas anteriores:
-           {conversaciones_anteriores}  
-        
-        Pregunta actual:
-        - {received_text}
-
-        {contexto_adicional}
-
-        Max_token:
-        - 50
+Max_token:
+- 50
     """
 
     return pregunta
 
 
-
-
-
-
 def obtener_conversaciones_anteriores(celular):
     """
-    Obtiene las últimas 5 conversaciones de un celular desde la API
-    y retorna el resultado como texto formateado.
-    
-    Args:
-        celular (str): Número de celular a consultar (ej: '595971100267')
-    
-    Returns:
-        str: Texto formateado con las conversaciones o mensaje de error
+    Obtiene las últimas 5 conversaciones del número indicado desde la API.
     """
-    # Configuración fija
     URL_BASE = "http://3.148.238.163"
     ENDPOINT = "/api/conversaciones/obtener"
-    LIMITE = 5  # Valor fijo como solicitaste
-    
+    LIMITE = 5
+
     try:
-        # Construir URL completa
         url = f"{URL_BASE}{ENDPOINT}/{LIMITE}/{celular}"
-        
-        # Hacer la petición GET
         response = requests.get(url, timeout=10)
-        
-        # Verificar respuesta exitosa
+
         if response.status_code == 200:
             return response.text
         else:
             return f"Error al obtener conversaciones. Código: {response.status_code}\n{response.text}"
-    
+
     except requests.exceptions.RequestException as e:
         return f"Error de conexión: {str(e)}"
     except Exception as e:
         return f"Error inesperado: {str(e)}"
-    
-
-
-
-
 
 
 def agregar_contexto_adicional(received_text):
+    """
+    Agrega instrucciones adicionales según las palabras clave detectadas en la pregunta del usuario.
+    """
     contexto_extra = []
     texto_lower = received_text.lower()
-    
 
-
-
-    
     if any(palabra in texto_lower for palabra in ['extracto', 'estracto']):
-        contexto_extra.append("si el usuario te pide su estracto sin especificar mes y año responde solamente imprimir_estracto_actual")
-    
-    '''
-    if any(palabra in texto_lower for palabra in ['certificado', 'sueldo']):
-        contexto_extra.append("para certificados de sueldo: generar_certificado_sueldo_pdf")
-    '''
+        contexto_extra.append("Si el usuario solicita su extracto sin especificar mes ni año, responde con: imprimir_estracto_actual")
 
-    # Retornar concatenado si hay coincidencias
+    if 'actual' in texto_lower or 'último' in texto_lower:
+        contexto_extra.append("El usuario está solicitando el último extracto disponible: imprimir_estracto_actual")
+
+    if 'mes' in texto_lower or 'año' in texto_lower:
+        contexto_extra.append("El usuario especificó un período: imprimir_estracto_mes_anio")
+
     return "Contexto adicional: " + " | ".join(contexto_extra) if contexto_extra else ""
