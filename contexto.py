@@ -6,7 +6,7 @@ def generar_pregunta(received_text, usuario, celular):
     # Si no hay usuario, se deja vacío el campo correspondiente en la pregunta
     usuario_info = f"\n{usuario}" if usuario else ""
 
-
+ 
     # Obtener conversaciones anteriores
     conversaciones_anteriores = obtener_conversaciones_anteriores(celular)
 
