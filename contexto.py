@@ -1,4 +1,4 @@
-uentoimport requests
+import requests
 
 def generar_pregunta(received_text, usuario, celular):
     """Genera el mensaje con el contexto y la pregunta actual, con el nombre de usuario si se encuentra."""
