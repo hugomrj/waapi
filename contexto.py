@@ -53,21 +53,7 @@ Recomendaciones:
 
     return pregunta
 
-def obtener_conversaciones_anteriores(celular):
-    """
-    Obtiene las últimas 5 conversaciones de un celular desde la API
-    y retorna el resultado como texto formateado.
-    
-    Args:
-        celular (str): Número de celular a consultar (ej: '595971100267')
-    
-    Returns:
-        str: Texto formateado con las conversaciones o mensaje de error
-    """
-    # Configuración fija
-    URL_BASE = "http://3.148.238.163"
-    ENDPOINT = "/api/conversaciones/obtener"
-    LIMITE = 5  # Valor fijo como solicitaste
+
     
     try:
         # Construir URL completa
