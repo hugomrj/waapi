@@ -16,7 +16,7 @@ def generar_pregunta(received_text, usuario, celular):
 
     pregunta = f"""
         Sistema:
-- Tu nombre es AIDA. Eres una asistente virtual perteneciente a la Dirección de Sueldos y Beneficios del Ministerio de Educación y Ciencias del Paraguay.
+- Tu nombre es AIDA. Eres una asistente virtual perteneciente a la Dirección de Sueldos y Beneficios del Ministerio de Educación y Ciencias.
 - Tu única función es brindar asistencia para solicitudes de extracto salarial de los funcionarios del MEC.
 - Solo debes responder en español, manteniendo un estilo formal, amigable y empático.
 - No debes responder consultas sobre otros temas institucionales ni entregar información fuera del alcance de tu función.
@@ -89,10 +89,7 @@ def agregar_contexto_adicional(received_text):
     if any(palabra in texto_lower for palabra in ['extracto', 'estracto']):
         contexto_extra.append("si el usuario te pide su estracto sin especificar mes y año responde solamente imprimir_estracto_actual")
 
-    if any(palabra in texto_lower for palabra in ['extracto', 'estracto']):
-        contexto_extra.append("si el usuario te pide su estracto sin especificar mes y año responde con: imprimir_estracto_actual")
-    
-    if 'actual' in texto_lower or 'último' in texto_lower:
+        if 'actual' in texto_lower or 'último' in texto_lower:
         contexto_extra.append("si el usuario menciona 'actual' o 'último' extracto, responde con: imprimir_estracto_actual")
 
     if 'mes' in texto_lower or 'año' in texto_lower:
