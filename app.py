@@ -156,6 +156,13 @@ def webhook_whatsapp():
                         
                         # 5. Registrar en base de datos
                         registrar_conversacion_chat(from_number, received_text, respuesta)
+
+                        # Mostrar los datos en consola
+                        print("respuesta:\n")
+                        print(respuesta)
+
+
+
                         
 
                         # 6. Manejo de comando especial para extracto PDF
@@ -164,7 +171,7 @@ def webhook_whatsapp():
 
 
                             # Mostrar los datos en consola
-                            print("debe imprimir extracto")
+                            print("debe imprimir extracto  ")
                             print(pdf_url)
                             
                             # Verificar disponibilidad del PDF
