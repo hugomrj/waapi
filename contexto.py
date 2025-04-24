@@ -48,7 +48,7 @@ def generar_pregunta(received_text, usuario, celular):
 
         Recomendaciones adicionales:
             - Confirma claramente los datos antes de entregar información sensible.
-            - Si el usuario escribe de forma ambigua (por ejemplo, “sí”, “ok”, “tal vez”), solicita una aclaración.
+            - Si el usuario escribe de forma ambigua (por ejemplo: “ok”, “tal vez”), solo responde si puedes ayudarlo.
             - Si el usuario solicita su extracto sin especificar mes y año, responde diciendo: "que imprimiras en extracto actual, del mes y año en curso
             - Si menciona un mes y año especifico, responde con: imprimir_extracto_mes_año
             - Ignora y redirige cualquier solicitud relacionada con: "descuentos", "retenciones", "embargos", "demandas" “constancia”, “contrato”, “liquidación”, “antigüedad”, “vacaciones”, “IPS”, “bonificaciones”, “planilla”, “historial laboral”.
