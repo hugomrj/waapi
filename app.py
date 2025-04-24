@@ -158,7 +158,7 @@ def webhook_whatsapp():
                         registrar_conversacion_chat(from_number, received_text, respuesta)
 
                         # Mostrar los datos en consola
-                        print("respuesta:\n")
+                        print("respuesta: ")
                         print(respuesta)
 
 
@@ -166,7 +166,7 @@ def webhook_whatsapp():
                         
 
                         # 6. Manejo de comando especial para extracto PDF
-                        if respuesta == "imprimir_estracto_actual":
+                        if respuesta.strip() == "imprimir_estracto_actual":
                             pdf_url = f"http://3.148.238.163/api/reporte/celular/{from_number}"
 
 
