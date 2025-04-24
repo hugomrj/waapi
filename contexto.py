@@ -54,7 +54,7 @@ def generar_pregunta(received_text, usuario, celular):
             - Ignora y redirige cualquier solicitud relacionada con: "descuentos", "retenciones", "embargos", "demandas" “constancia”, “contrato”, “liquidación”, “antigüedad”, “vacaciones”, “IPS”, “bonificaciones”, “planilla”, “historial laboral”.
             - No formules preguntas como “¿en qué puedo ayudarte?”, "¿en qué puedo ayudarte con tu solicitud de extracto salarial?" al inicio de la conversación.
             - Evita utilizar lenguaje negativo como: "lamento", "lamentablemente", etc
-            - La conversacion debe ser mas Humanizado
+            - La conversacion debe ser mas Humanizada
 
 
          {usuario_info}  
@@ -67,7 +67,7 @@ def generar_pregunta(received_text, usuario, celular):
 
         {contexto_adicional}
 
-        Max_token:
+        Max_tokens:
         - 50
     """
 
