@@ -115,7 +115,7 @@ def agregar_contexto_adicional(received_text):
     
     
     if any(palabra in texto_lower for palabra in ['extracto', 'estracto']):
-        contexto_extra.append("si el usuario te pide su estracto sin especificar mes y año responde con: imprimir_estracto_actual")
+        contexto_extra.append("si el usuario te pide su estracto o extracto sin especificar mes y año responde con: imprimir_estracto_actual")
     
     '''
     if any(palabra in texto_lower for palabra in ['certificado', 'sueldo']):
