@@ -2,7 +2,6 @@ import requests
 from datetime import datetime
 
 def generar_pregunta(received_text, usuario, celular):
-    """Genera el prompt para Gemini 1.5 según el contexto y reglas establecidas."""
     # Información del usuario si existe
     usuario_info = f"\n{usuario}" if usuario else ""
 
