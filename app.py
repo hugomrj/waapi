@@ -186,7 +186,7 @@ def webhook_whatsapp():
                                     return jsonify({"status": "document sent"}), 200
                             
                             # Si falla cualquiera de los pasos anteriores
-                            error_msg = "Lo siento, no pude generar tu extracto en este momento. Por favor intenta más tarde."
+                            error_msg = "Lo siento, no pude generar tu extracto en este momento. por favor actualiza tus datos en el SIGMEC."
                             send_whatsapp_message(from_number, error_msg)
                             return jsonify({"status": "pdf generation failed"}), 200
                         
