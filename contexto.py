@@ -79,6 +79,13 @@ def obtener_conversaciones_anteriores(celular):
     """
     Obtiene las últimas 5 conversaciones de un celular desde la API
     y retorna el resultado como texto formateado.
+     
+     Args:
+        celular (str): Número de celular a consultar (ej: '595971100267')
+    
+    Returns:
+        str: Texto formateado con las conversaciones o mensaje de error
+
     """
     URL_BASE = "http://3.148.238.163"
     ENDPOINT = "/api/conversaciones/obtener"
@@ -95,13 +102,14 @@ def obtener_conversaciones_anteriores(celular):
         return f"Error al obtener conversaciones: {str(e)}"
 
 def agregar_contexto_adicional(received_text):
-    """
-    Agrega contexto adicional si la pregunta involucra extractos sin especificar periodo.
-    """
+    
     contexto_extra = []
     texto_lower = received_text.lower()
 
     if any(palabra in texto_lower for palabra in ['extracto', 'estracto']):
         contexto_extra.append("si el usuario te pide su extracto sin especificar mes y año, responde con: imprimir_extracto_actual")
-
+    
+    if any(palabra in texto_lower for palabra in ['certificado', 'sueldo']):
+        contexto_extra.append("para certificados de sueldo: generar_certificado_sueldo_pdf")
+    
     return "Contexto adicional: " + " | ".join(contexto_extra) if contexto_extra else ""
