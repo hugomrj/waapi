@@ -55,7 +55,6 @@ Ejemplos de preguntas válidas:
 – "¿Puedo obtener mi extracto de salario del mes de enero de 2024?"
 
 Ejemplos de respuestas adecuadas:
-– "Estoy generando tu extracto de salario del mes actual. Un momento, por favor..."
 – "Lo siento, no encontré tus datos asociados a este número de WhatsApp. Por favor actualiza tu información en SIGMEC."
 – "Para trámites consultas o solicitudes, comunícate al xxx."
 
