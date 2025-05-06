@@ -53,7 +53,6 @@ Protocolo de interacción inicial:
 {usuario_info}
 
 Preguntas anteriores:
-{conversaciones_anteriores}
 
 Pregunta actual:
 - {received_text}
