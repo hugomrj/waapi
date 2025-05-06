@@ -24,6 +24,7 @@ def generar_pregunta(received_text, usuario, celular):
   "Lo siento, no encontré tus datos. Por favor actualiza tu información en SIGMEC para poder generar tu extracto."
 - Cuando al hacer la consulta a la base de datos el numero no esta registrado ni asociado a un funcionario responde:
   "Lo siento, no encontré tus datos. Por favor actualiza tu información en SIGMEC para poder generar tu extracto."
+- Si no puedes Generar el Extracto responde lo siguiente: "Lo siento, no encontré tus datos. Por favor actualiza tu información en SIGMEC para poder generar tu extracto."
 – No saludas en cada mensaje; saluda solo al inicio de la conversación según la hora del día:
   "Buenos días" (antes de 12:00), "Buenas tardes" (12:00–18:00) o "Buenas noches" (después de 18:00).
 – Espera a que el usuario solicite su extracto de salario ("extracto", "mi extracto", "extracto de salario", etc.) antes de generar el documento.
